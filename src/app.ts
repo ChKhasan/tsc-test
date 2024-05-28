@@ -6,8 +6,6 @@ class User {
     this.name = "123123"
   }
   private getInfo() {
-    console.log("aaaa");
-    
   }
 }
 class UserChild extends User {
