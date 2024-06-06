@@ -1,39 +1,63 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+function MethodDecorator() {
+    return function (target, propertyName, descriptor) {
+        console.log("call method 2");
+        var objMethod = descriptor.value;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            console.log("dectorator this", this);
+            return objMethod.apply(this, args);
+        };
     };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var User = /** @class */ (function () {
-    function User() {
-        this.name = "name1";
-        this.age = 1;
-        this.number = 2;
-        this.name = "123123";
+}
+var MyClass2 = /** @class */ (function () {
+    function MyClass2() {
     }
-    User.prototype.getInfo = function () {
-        console.log("aaaa");
+    MyClass2.prototype.myMethod = function (a, b) {
+        console.log("call method 1");
+        console.log('a = ', a);
+        console.log('b = ', b);
+        console.log("myMethod this", this);
     };
-    return User;
+    __decorate([
+        MethodDecorator()
+    ], MyClass2.prototype, "myMethod", null);
+    return MyClass2;
 }());
-var UserChild = /** @class */ (function (_super) {
-    __extends(UserChild, _super);
-    function UserChild() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return UserChild;
-}(User));
-var obj1 = new User();
-console.log(User.prototype);
-console.log(UserChild.prototype);
-console.log(obj1.__proto__);
+var obj2 = new MyClass2();
+obj2.myMethod("first", "last");
+// function MethodDecorator() {
+//     return (
+//       target: any,
+//       propertyName: string,
+//       descriptor: PropertyDescriptor
+//     ) => {
+//       console.log("call method 2");
+//       let objMethod = descriptor.value;
+//       descriptor.value = function(...args: any[]) {
+//         console.log("decorator this", this); // Должен быть контекст вызова (экземпляр класса)
+//         console.log("args", args); // Проверка аргументов
+//         return objMethod.apply(this,args) // Применение оригинального метода с текущим контекстом и аргументами
+//       };
+//     };
+//   }
+//   class MyClass {
+//     @MethodDecorator()
+//     myMethod(a: string, b: string) {
+//       console.log("call method 1");
+//       console.log('a = ', a);
+//       console.log('b = ', b);
+//       console.log("myMethod this", this); // Должен быть экземпляр класса
+//     }
+//   }
+//   let obj = new MyClass();
+//   obj.myMethod("first", "last");
